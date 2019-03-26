@@ -5,13 +5,13 @@
   if(isset($_SESSION['user_id'])){
     $save = $_POST['save'];
     $preview = $_POST['preview'];
-    $title = $_POST['title'];
-    $author = $_POST['author'];
-    $content = $_POST['content'];
-    $bp_id = $_POST['bp_id'];
+    $title = isset($_POST['title']) ? $_POST['title'] : $_COOKIE['title'];
+    $author = isset($_POST['author']) ? $_POST['author'] : $_COOKIE['author'];
+    $content = isset($_POST['content']) ? $_POST['content'] : $_COOKIE['content'];
+    $bp_id = isset($_POST['bp_id']) ? $_POST['bp_id'] : $_COOKIE['bp_id'];
     $date_published = date("y-m-d");
     $archive = date("y-m-01");
-    $tags = $_POST['tags'];
+    $tags = isset($_POST['tags']) ? $_POST['tags'] : $_COOKIE['tags'];
 
     if(isset($save)){
       //save article
@@ -28,9 +28,9 @@
         $stmt->fetch();
         $stmt->close();
       }else {
-        $sql = "update articles set author=?, content=?, date_published=?, title=?, archive=? where id=?";
+        $sql = "update articles set author=?, content=?, title=? where id=?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssss",$author,$content,$date_published,$title,$archive,$bp_id);
+        $stmt->bind_param("ssss",$author,$content,$title,$bp_id);
         $stmt->execute();
         $stmt->close();
       }
@@ -63,7 +63,11 @@
       }
       header("location: index.php");
     } elseif(isset($preview)){
-
+      setcookie("title",$title);
+      setcookie("author",$author);
+      setcookie("content",$content);
+      setcookie("bp_id",$bp_id);
+      setcookie("tags",$tags);
     }
   }else{
     header("location: login.php");
@@ -76,16 +80,11 @@
     <title><?php echo $title; ?></title>
   </head>
   <body>
-    <h1><?php echo $title; ?></h1>
+    <h1><?php echo($title); ?></h1>
     <p><?php echo "by $author"; ?></p>
-    <?php echo $content; ?>
+    <?php echo($content); ?>
 
     <form action='save.php' method='post'>
-      <input type='hidden' name='title' value='<?php echo $title; ?>'>
-      <input type='hidden' name='author' value='<?php echo $author; ?>'>
-      <input type='hidden' name='content' value='<?php echo $content; ?>'>
-      <input type='hidden' name='bp_id' value='<?php echo $bp_id; ?>'>
-      <input type='hidden' name='tags' value='<?php echo $tags; ?>'>
       <input type='submit' name='save' value='save'>
     </form>
 
