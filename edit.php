@@ -1,8 +1,9 @@
 <?php
-  include "../dbconfig.php";
 
-  session_start();
-  if(isset($_SESSION['user_id'])){
+  include '../dbconfig.php';
+include '../user_auth.php';
+
+  if(sessionExistsForService("editor")){
     $submit = $_POST['submit'];
     $bp_id = $_POST['blogposts'];
 

@@ -1,8 +1,8 @@
 <?php
-  include "../dbconfig.php";
+include '../dbconfig.php';
+include '../user_auth.php';
 
-  session_start();
-  if(isset($_SESSION['user_id'])){
+  if(sessionExistsForService("editor")){
       $otp_stuff = $_SESSION['otp_stuff'];
       $bp_table = '';
       $tags_table = '';
@@ -91,6 +91,22 @@ HTML;
       <tr><th>Archive</th><th># Articles</th><th>Remove</th></tr>
       <?php echo $ar_table; ?>
     </table>
+
+    <h1>File Options</h1>
+    <table>
+      <tr><th colspan=6><?php echo "directory name"; ?></th></tr>
+      <tr><th>Filename</th><th>Go To</th><th>Download</th><th>Rename</th><th>Move</th><th>Delete</th></tr>
+      <!--This should allow them to:
+          Download
+          Upload
+          Delete
+          Rename
+          Move -->
+    </table><br>
+    <form action='upload_file.php' method='post'>
+      <input type='file' name='file' />
+      <input type='submit' value='Upload File' name='upload_file'>
+    </form>
   </body>
   <footer>
   </footer>

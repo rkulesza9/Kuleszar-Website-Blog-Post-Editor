@@ -1,8 +1,9 @@
 <?php
-  include '../dbconfig.php';
 
-  session_start();
-  if(isset($_SESSION['user_id'])){
+  include '../dbconfig.php';
+include '../user_auth.php';
+
+  if(sessionExistsForService("editor")){
     $save = $_POST['save'];
     $preview = $_POST['preview'];
     $title = isset($_POST['title']) ? $_POST['title'] : $_COOKIE['title'];

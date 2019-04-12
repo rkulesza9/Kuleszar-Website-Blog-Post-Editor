@@ -1,8 +1,9 @@
 <?php
-  include "../dbconfig.php";
 
-  session_start();
-  if(isset($_SESSION['user_id'])){
+  include '../dbconfig.php';
+include '../user_auth.php';
+
+  if(sessionExistsForService("editor")){
     $DELETE_ARTICLES_WITH_TAG = 1;
 
     if(isset($_POST['submit'])){

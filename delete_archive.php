@@ -1,8 +1,8 @@
 <?php
   include '../dbconfig.php';
+  include '../user_auth.php';
 
-  session_start();
-  if(isset($_SESSION['user_id'])){
+    if(sessionExistsForService("editor")){
 
     if($_POST['submit']){
       $archive = $_POST['archive'];
